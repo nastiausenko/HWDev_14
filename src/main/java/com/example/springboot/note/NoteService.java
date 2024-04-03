@@ -1,5 +1,6 @@
-package com.example.springboot;
+package com.example.springboot.note;
 
+import com.example.springboot.note.Note;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
