@@ -13,6 +13,20 @@ import org.springframework.web.servlet.view.RedirectView;
 public class NoteController {
     private final NoteService noteService;
 
+    @GetMapping(value = "/create")
+    public ModelAndView createNotes() {
+        ModelAndView result = new ModelAndView("create");
+        result.addObject("note", noteService.listAll());
+        return result;
+    }
+
+    @PostMapping(value = "/create")
+    public RedirectView create(@ModelAttribute Note note) {
+        RedirectView redirectView = new RedirectView("/note/list");
+        noteService.add(note);
+        return redirectView;
+    }
+
     @GetMapping(value = "/list")
     public ModelAndView getListNotes() {
         ModelAndView result = new ModelAndView("list");
