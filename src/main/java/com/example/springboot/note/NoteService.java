@@ -1,5 +1,6 @@
 package com.example.springboot.note;
 
+import com.example.springboot.exceptions.NoteNotFoundException;
 import com.example.springboot.repo.NoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,15 +21,19 @@ public class NoteService {
     }
 
     public void deleteById(Long id) {
-        repository.deleteById(id);
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else throw new NoteNotFoundException(id);
     }
 
     public void update(Note note) {
-        repository.save(note);
+        if (repository.existsById(note.getId())) {
+            repository.save(note);
+        } else throw new NoteNotFoundException(note.getId());
     }
 
     public Note getById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Note with id = " + id + " doesn't exist"));
+                .orElseThrow(() -> new NoteNotFoundException(id));
     }
 }
